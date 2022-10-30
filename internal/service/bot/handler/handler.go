@@ -86,12 +86,13 @@ func (o *BotHandler) handleSubmitMedia(ctx context.Context) tele.HandlerFunc {
 		}
 
 		if c.Callback().Message.ReplyTo.Video != nil {
-			if err = o.SendPhoto(c); err != nil {
+			if err = o.SendVideo(c); err != nil {
 				logger.Error(err)
 				return err
 			}
 		}
 
+		err = c.Send("Ваше объявление отправлено на модерацию!")
 		return err
 	}
 }
@@ -151,6 +152,8 @@ func (o *BotHandler) handleSubmitText(ctx context.Context) tele.HandlerFunc {
 
 		completeText := fmt.Sprintf("%s \n\nАвтор: @%s", c.Callback().Message.ReplyTo.Text, c.Callback().Message.ReplyTo.Sender.Username)
 		_, err = o.Send(&tele.User{ID: adminID}, completeText)
+
+		err = c.Send("Ваше объявление отправлено на модерацию!")
 
 		return err
 	}

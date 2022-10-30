@@ -52,6 +52,12 @@ func (o *Service) Init(ctx context.Context, version, built, appName string) {
 
 	o.handle(ctx, bot)
 
+	defer func() {
+		if r := recover(); r != nil {
+			bot.Start()
+		}
+	}()
+
 	bot.Start()
 }
 
